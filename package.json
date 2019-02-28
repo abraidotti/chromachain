@@ -1,0 +1,23 @@
+{
+  "name": "chromachain",
+  "version": "1.0.0",
+  "description": "an outer-space game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abraidotti/chromachain.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abraidotti/chromachain/issues"
+  },
+  "homepage": "https://github.com/abraidotti/chromachain#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
