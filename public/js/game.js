@@ -62,10 +62,15 @@ function create() {
 
   this.blueScoreText = this.add.text(16, 16, '', { fontSize: '32px', fill: '#0000FF' });
   this.redScoreText = this.add.text(584, 16, '', { fontSize: '32px', fill: '#FF0000' });
+  this.debugText = this.add.text(200, 550, '', { fontSize: '32px', fill: '#FFFFFF' });
     
   this.socket.on('scoreUpdate', function (scores) {
     self.blueScoreText.setText('Blue: ' + scores.blue);
     self.redScoreText.setText('Red: ' + scores.red);
+  });
+
+  this.socket.on('tallyUpdate', function (player) {
+    self.debugText.setText(`${player.name}: ${player.tally} stars`)
   });
   
   this.socket.on('starLocation', function (starLocation) {
@@ -92,6 +97,10 @@ function update() {
       } else {
         this.ship.setAcceleration(0);
       }
+
+      // if (this.cursors.space.isDown) {
+      //   self.debugText.setText('space');
+      // }
     
       this.physics.world.wrap(this.ship, 5);
 
@@ -134,3 +143,4 @@ function addOtherPlayers(self, playerInfo) {
   otherPlayer.playerId = playerInfo.playerId;
   self.otherPlayers.add(otherPlayer);
 }
+

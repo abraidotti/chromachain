@@ -5,14 +5,17 @@ const io = require('socket.io').listen(server);
  
 let players = {};
 
-var star = {
+let star = {
   x: Math.floor(Math.random() * 700) + 50,
   y: Math.floor(Math.random() * 500) + 50
 };
-var scores = {
+let scores = {
   blue: 0,
   red: 0
 };
+
+const shipFirstNames = ['cosmos', 'nebula', 'asteroid', 'lunar'];
+const shipLastNames = ['bonemaster', 'ninja', 'pizza', 'detective'];
  
 app.use(express.static(__dirname + '/public'));
  
@@ -22,14 +25,18 @@ app.get('/', (req, res) => {
  
 io.on('connection', (socket) => {
   console.log('a user connected');
+
   // create a new player and add it to our players object
   players[socket.id] = {
+    name: `${shipFirstNames[Math.floor(Math.random()*shipFirstNames.length)]} ${shipLastNames[Math.floor(Math.random()*shipLastNames.length)]}`,
     rotation: 0,
     x: Math.floor(Math.random() * 700) + 50,
     y: Math.floor(Math.random() * 500) + 50,
     playerId: socket.id,
-    team: (Math.floor(Math.random() * 2) == 0) ? 'red' : 'blue'
+    team: (Math.floor(Math.random() * 2) == 0) ? 'red' : 'blue',
+    tally: 0
   };
+  
   // send the players object to the new player
   socket.emit('currentPlayers', players);
   // send the star object to the new player
@@ -65,7 +72,13 @@ io.on('connection', (socket) => {
     star.y = Math.floor(Math.random() * 500) + 50;
     io.emit('starLocation', star);
     io.emit('scoreUpdate', scores);
+
+    players[socket.id].tally++;
+    io.emit('tallyUpdate', players[socket.id])
   });
+
+
+
 });
  
 server.listen(8081, () => {
